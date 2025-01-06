@@ -7,6 +7,7 @@ BUILD_DIR=build
 
 BOOT_SECTOR_SRC=$(SRC_DIR)/boot_sector
 KERNEL_SRC=$(SRC_DIR)/kernel
+DRIVERS_SRC=$(SRC_DIR)/drivers
 
 EMU=qemu-system-x86_64
 
@@ -22,15 +23,17 @@ $(BUILD_DIR)/boot_sector.bin: $(BOOT_SECTOR_SRC)/main.asm
 
 
 # Build the kernel binary
-$(BUILD_DIR)/kernel.bin: $(BUILD_DIR)/kernel_entry.o $(BUILD_DIR)/kernel.o
-	$(LD) -o $(BUILD_DIR)/kernel.bin -Ttext 0x1000 $(BUILD_DIR)/kernel_entry.o $(BUILD_DIR)/kernel.o --oformat binary
+$(BUILD_DIR)/kernel.bin: $(BUILD_DIR)/kernel_entry.o $(BUILD_DIR)/kernel.o $(BUILD_DIR)/drivers.o
+	$(LD) -o $(BUILD_DIR)/kernel.bin -Ttext 0x1000 $(BUILD_DIR)/kernel_entry.o $(BUILD_DIR)/kernel.o $(BUILD_DIR)/drivers.o --oformat binary
 # Build the kernel object file
-$(BUILD_DIR)/kernel.o : $(KERNEL_SRC)/kernel.c
-	$(GCC) -ffreestanding -c $(KERNEL_SRC)/kernel.c -o $(BUILD_DIR)/kernel.o
+$(BUILD_DIR)/kernel.o : $(KERNEL_SRC)/*.c
+	$(GCC) -ffreestanding -I$(DRIVERS_SRC) -c $(KERNEL_SRC)/kernel.c -o $(BUILD_DIR)/kernel.o
 # Build the kernel entry object file.
 $(BUILD_DIR)/kernel_entry.o : $(KERNEL_SRC)/kernel_entry.asm
 	$(ASM) $(KERNEL_SRC)/kernel_entry.asm -f elf -o $(BUILD_DIR)/kernel_entry.o
 
+$(BUILD_DIR)/drivers.o : $(DRIVERS_SRC)/*.c
+	$(GCC) -ffreestanding -I$(DRIVERS_SRC) -c $(DRIVERS_SRC)/*.c -o $(BUILD_DIR)/drivers.o
 
 run:
 	$(EMU) $(BUILD_DIR)/os_image.img
