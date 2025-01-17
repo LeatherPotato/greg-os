@@ -14,10 +14,10 @@ welcome to the ever expanding list of requirements i have, itll probably seem qu
 
 # outputs
 
-- [ ] display driver
-- [ ] clearing the screen after booting
+- [x] display driver
+- [x] clearing the screen after booting
 - [ ] text and number printing
-- [ ] scrolling when cursor reaches bottom
+- [x] scrolling when cursor reaches bottom
 - [ ] graphical mode, outputting a colour palette
 
 # inputs
