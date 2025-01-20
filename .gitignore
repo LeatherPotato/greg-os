@@ -1,4 +1,6 @@
 build/*
 .DS_Store
+obj/*
+.gitignore
 
 !build/os_image.img

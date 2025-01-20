@@ -20,6 +20,10 @@ welcome to the ever expanding list of requirements i have, itll probably seem qu
 - [x] scrolling when cursor reaches bottom
 - [ ] graphical mode, outputting a colour palette
 
+# interrupts
+
+- [ ] 
+
 # inputs
 
 - [ ] keyboard driver? 
